@@ -3,13 +3,23 @@ import React from 'react';
 
 function Counter() {
   const [count, setCount] = React.useState(() => {
-    return Number(
-      window.localStorage.getItem('saved-count') || 0
-    );
+    return null
   });
 
+  React.useEffect(()=> {
+    const savedValue = window.localStorage.getItem('saved-count');
+    if (savedValue === null ) {
+      return;
+    }
+
+    setCount(Number(savedValue));
+
+  }, [])
+
   React.useEffect(() => {
-    window.localStorage.setItem('saved-count', count);
+    if (typeof count === 'number') {
+      window.localStorage.setItem('saved-count', count);
+    }
   }, [count]);
 
   return (
